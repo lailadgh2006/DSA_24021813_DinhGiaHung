@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-class DoubleLinkedList{
+class DoublyLinkedList{
 private:
     class Node{
     public:
@@ -20,12 +20,12 @@ private:
     int size;
 
 public:
-    DoubleLinkedList(){
+    DoublyLinkedList(){
         head = nullptr;
         size = 0;
     }
 
-    ~DoubleLinkedList(){
+    ~DoublyLinkedList(){
         Node* current = head;
         while(current != nullptr){
             Node* nextNode = current->next;
