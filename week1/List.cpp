@@ -1,7 +1,16 @@
 #include <iostream>
 using namespace std;
+struct Node {
+    int data;       
+    Node* next;   
 
-class List{
+    Node(int val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class List {
 private:
     int *arr;
     int cap;
@@ -17,66 +26,67 @@ public:
     ~List(){        
         delete[] arr;
     }
-int get(int i){
-    if(i < 0 || i >= size){
-        cout << "Index error";
-        return 0;
-    }
-    return arr[i];
-}
 
-void insertHead(int value){
-    for(int i = size; i > 0; i--){
-        arr[i] = arr[i-1];
+    int get(int i){
+        if(i < 0 || i >= size){
+            cout << "Index error";
+            return 0;
+        }
+        return arr[i];
     }
-    arr[0] = value;
-    size ++;
-}
 
-void insertTail(int value){
-    arr[size] = value;
-    size++;
-}
+    void insertHead(int value){
+        for(int i = size; i > 0; i--){
+            arr[i] = arr[i-1];
+        }
+        arr[0] = value;
+        size ++;
+    }
 
-void insert(int value, int k){
-    if(k == 0) return insertHead(value);
-    for(int i = size; i > k; i--){
-        arr[i] = arr[i-1];
+    void insertTail(int value){
+        arr[size] = value;
+        size++;
     }
-    arr[k] = value;
-    size++;
-}
-void deleteHead(){
-    for(int i = 0; i < size - 1; i++){
-        arr[i] = arr[i+1];
+
+    void insert(int value, int k){
+        if(k == 0) return insertHead(value);
+        for(int i = size; i > k; i--){
+            arr[i] = arr[i-1];
+        }
+        arr[k] = value;
+        size++;
     }
-    size--;
-}
-void deleteTail(){
-    size--;
-}
-void deletee(int k){
-    if(k == 0) return deleteHead();
-    for(int i = k; i < size - 1; i++){
-        arr[i] = arr[i+1];
+
+    void deleteHead(){
+        for(int i = 0; i < size - 1; i++){
+            arr[i] = arr[i+1];
+        }
+        size--;
     }
-    size--;
-}
-void travF(){
-    for (int i = 0; i < size; i++) {
-        cout << arr[i] << " ";
+
+    void deleteTail(){
+        size--;
     }
-    cout << endl;
-}
-void travB() {
-    for (int i = size - 1; i >= 0; i--) {
-        cout << arr[i] << " ";
+
+    void deletee(int k){
+        if(k == 0) return deleteHead();
+        for(int i = k; i < size - 1; i++){
+            arr[i] = arr[i+1];
+        }
+        size--;
     }
-    cout << endl;
+
+    void travF(){
+        for (int i = 0; i < size; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+
+    void travB() {
+        for (int i = size - 1; i >= 0; i--) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
     }
 };
-
-
-int main(){
-    
-}
