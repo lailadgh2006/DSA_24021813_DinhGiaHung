@@ -1,10 +1,9 @@
 #include <iostream>
 using namespace std;
 
-class LinkedList{
+struct LinkedList {
 private:
-    class Node{
-    public:
+    struct Node {
         int data;
         Node* next;
         
@@ -31,21 +30,25 @@ public:
             current = nextNode;
         }
     }
+
     int get(int k){
         Node* temp = head;
         int i = 0;
-        while(i != k){
+        while(i != k && temp != nullptr){
             temp = temp->next;
             i++;
         }
+        if(temp == nullptr) return -1; 
         return temp->data;
     }
+
     void insertHead(int value){
         Node* newNode = new Node(value);
         newNode->next = head;
         head = newNode;
         size++;
     }
+
     void insertTail(int value){
         Node* newNode = new Node(value);
         if(head == nullptr){
@@ -60,19 +63,25 @@ public:
         temp->next = newNode;
         size++;
     }
+
     void insert(int value, int k){
         if(k == 0) return insertHead(value);
         Node* newNode = new Node(value);
         Node* temp = head;
         int i = 0;
-        while(i != k - 1){
+        while(i != k - 1 && temp != nullptr){
             temp = temp->next;
             i++;
+        }
+        if(temp == nullptr) {
+            delete newNode;
+            return;
         }
         newNode->next = temp->next;
         temp->next = newNode;
         size++;
     }
+
     void deleteHead(){
         if(head == nullptr) return;
         Node* temp = head;
@@ -80,7 +89,9 @@ public:
         delete temp;
         size--;
     }
+
     void deleteTail(){
+        if(head == nullptr) return;
         if(head->next == nullptr){
             delete head;
             head = nullptr;
@@ -95,19 +106,22 @@ public:
         temp->next = nullptr;
         size--;
     }
+
     void deletee(int k){
         if(k == 0) return deleteHead();
         Node* temp = head;
         int i = 0;
-        while(i != k-1){
+        while(i != k-1 && temp != nullptr){
             temp = temp->next;
             i++;
         }
+        if(temp == nullptr || temp->next == nullptr) return;
         Node* nodeDelete = temp->next;
         temp->next = temp->next->next;
         delete nodeDelete;
         size--;
     }
+
     void travF(){
         Node* temp = head;
         while(temp != nullptr){
@@ -116,13 +130,16 @@ public:
         }
         cout << endl;
     }
+
     void travB(){
         for(int i = size - 1; i >= 0; i--){
             Node* temp = head;
-            for(int j = 0; j < i; j++){
+            for(int j = 0; j < i && temp != nullptr; j++){
                 temp = temp->next;
             }
-            cout << temp->data << " ";
+            if(temp != nullptr) {
+                cout << temp->data << " ";
+            }
         }
         cout << endl;
     }
