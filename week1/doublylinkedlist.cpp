@@ -33,8 +33,6 @@ public:
             current = nextNode;
         }
     }
-
-// Truy cap || O(n)
     int get(int k){
         Node* temp = head;
         int i = 0;
@@ -44,8 +42,6 @@ public:
         }
         return temp->data;
     }
-
-// Chen phan tu vao dau || O(1)
     void insertHead(int value){
         Node* newNode = new Node(value);
         newNode->next = head;
@@ -55,8 +51,6 @@ public:
         head = newNode;
         size++;
     }
-
-// Chen phan tu vao cuoi || O(n)
     void insertTail(int value){
         Node* newNode = new Node(value);
         if(head == nullptr){
@@ -72,8 +66,6 @@ public:
         newNode->prev = temp;
         size++;
     }
-
-// Chen phan tu vao vi tri k || O(n)
     void insert(int value, int k){
         if(k == 0) return insertHead(value);
         Node* newNode = new Node(value);
@@ -91,8 +83,6 @@ public:
         temp->next = newNode;
         size++;
     }
-
-// Xoa phan tu dau || O(1)
     void deleteHead(){
         Node* temp = head;
         head = head->next;
@@ -102,8 +92,6 @@ public:
         delete temp;
         size--;
     }
-
-// Xoa phan tu cuoi || O(n)
     void deleteTail(){
         Node* temp = head;
         while(temp->next != nullptr){
@@ -118,8 +106,6 @@ public:
         delete temp;
         size--;
     }
-
-// Xoa phan tu thu k || O(n)
     void deletee(int k){
         if(k == 0) return deleteHead();
         Node* temp = head;
@@ -135,8 +121,6 @@ public:
         delete temp;
         size--;
     }
-
-// Duyet xuoi || O(n)
     void travF(){
         Node* temp = head;
         while(temp != nullptr){
@@ -145,8 +129,6 @@ public:
         }
         cout << endl;
     }
-
-// Duyet nguoc || O(n)
     void travB(){
         Node* temp = head;
         if(temp == nullptr) return;
