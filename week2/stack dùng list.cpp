@@ -1,220 +1,113 @@
 #include <iostream>
 using namespace std;
 
-struct Node {
-    int data;       
-    Node* next;   
+const int MAX = 100; // Kích thước tối đa của mảng
 
-    Node(int val) {
-        data = val;
-        next = nullptr;
-    }
-};
+struct List {
+    int data[MAX]; // Mảng tĩnh lưu trữ các phần tử
+    int n;         // Số lượng phần tử hiện tại
 
-class List {
-private:
-    int *arr;
-    int cap;
-    int size;
-
-public:
-    List(int k){
-        cap = k;
-        size = 0;
-        arr = new int[cap];
+    // Khởi tạo danh sách rỗng
+    void init() {
+        n = 0;
     }
 
-    ~List(){        
-        delete[] arr;
-    }
-
-    int getSize() {
-        return size;
-    }
-
-    bool isEmpty() {
-        return size == 0;
-    }
-
-    bool isFull() {
-        return size == cap;
-    }
-
-    int get(int i){
-        if(i < 0 || i >= size){
-            cout << "Index error\n";
-            return 0;
+    // Trả về phần tử tại vị trí i
+    int getAt(int i) {
+        if (i < 0 || i >= n) {
+            cout << "Loi: Vi tri khong hop le!\n";
+            return -1; // Giá trị báo lỗi
         }
-        return arr[i];
+        return data[i];
     }
 
-    void insertHead(int value){
-        if(isFull()){
-            cout << "List full!\n";
+    // Thêm vào cuối danh sách
+    void insertTail(int val) {
+        if (n >= MAX) {
+            cout << "Danh sach da day!\n";
             return;
         }
-        for(int i = size; i > 0; i--){
-            arr[i] = arr[i-1];
-        }
-        arr[0] = value;
-        size++;
+        data[n] = val;
+        n++;
     }
 
-    void insertTail(int value){
-        if(isFull()){
-            cout << "List full!\n";
-            return;
-        }
-        arr[size] = value;
-        size++;
-    }
-
-    void insert(int value, int k){
-        if(isFull()){
-            cout << "List full!\n";
-            return;
-        }
-        if(k == 0) return insertHead(value);
-        for(int i = size; i > k; i--){
-            arr[i] = arr[i-1];
-        }
-        arr[k] = value;
-        size++;
-    }
-
-    int deleteHead(){
-        if(isEmpty()){
-            cout << "List empty!\n";
+    // Xóa cuối danh sách, trả về phần tử vừa xóa
+    int deleteTail() {
+        if (n <= 0) {
+            cout << "Danh sach rong!\n";
             return -1;
         }
-        int removed = arr[0];
-        for(int i = 0; i < size - 1; i++){
-            arr[i] = arr[i+1];
-        }
-        size--;
-        return removed;
+        return data[--n]; // giảm n rồi trả về phần tử cuối cũ
     }
 
-    int deleteTail(){
-        if(isEmpty()){
-            cout << "List empty!\n";
-            return -1;
-        }
-        int removed = arr[size - 1];
-        size--;
-        return removed;
-    }
-
-    int deletee(int k){
-        if(isEmpty()){
-            cout << "List empty!\n";
-            return -1;
-        }
-        if(k == 0) return deleteHead();
-        int removed = arr[k];
-        for(int i = k; i < size - 1; i++){
-            arr[i] = arr[i+1];
-        }
-        size--;
-        return removed;
-    }
-
-    // Duyệt xuôi: In từ đầu mảng (chỉ số 0) đến cuối mảng
-    void travF(){
-        if(isEmpty()){
-            cout << "(Rong)";
-        } else {
-            for (int i = 0; i < size; i++) {
-                cout << arr[i] << " ";
-            }
+    // Duyệt xuôi mảng (từ vị trí 0 đến n - 1)
+    void travF() {
+        if (isEmpty()) cout << "(Rong)";
+        else {
+            for (int i = 0; i < n; i++) cout << data[i] << " ";
         }
         cout << endl;
     }
 
-    // Duyệt ngược: In từ cuối mảng (chỉ số size-1) về đầu mảng
+    // Duyệt ngược mảng (từ vị trí n - 1 về 0)
     void travB() {
-        if(isEmpty()){
-            cout << "(Rong)";
-        } else {
-            for (int i = size - 1; i >= 0; i--) {
-                cout << arr[i] << " ";
-            }
+        if (isEmpty()) cout << "(Rong)";
+        else {
+            for (int i = n - 1; i >= 0; i--) cout << data[i] << " ";
         }
         cout << endl;
     }
+
+    bool isEmpty() { return n == 0; }
+    int size()     { return n; }
 };
 
-// ===================== LỚP STACK (LIFO) =====================
-// Quy ước: Đỉnh Stack (Top) nằm ở CUỐI mảng List
-class Stack {
-private:
-    List list;
+// ===================== STACK (dùng List mảng) =====================
+// Đỉnh stack = CUỐI mảng
+struct Stack {
+    List l;
 
-public:
-    Stack(int capacity) : list(capacity) {}
+    void init()          { l.init(); }                     // khởi tạo stack rỗng
 
-    bool isEmpty() {
-        return list.isEmpty();
-    }
+    bool isEmpty()       { return l.isEmpty(); }            // O(1)
 
-    bool isFull() {
-        return list.isFull();
-    }
+    void push(int item)  { l.insertTail(item); }            // O(1)
 
-    int size() {
-        return list.getSize();
-    }
+    int  pop()           { return l.deleteTail(); }         // O(1)
 
-    // Thêm phần tử vào đỉnh Stack
-    void push(int value) {
-        list.insertTail(value);
-    }
+    int  size()          { return l.size(); }               // O(1)
 
-    // Lấy phần tử khỏi đỉnh Stack và xóa đi
-    int pop() {
-        return list.deleteTail();
-    }
-
-    // Xem giá trị ở đỉnh Stack (không xóa)
-    int top() {
-        if (isEmpty()) {
-            cout << "Stack rong!\n";
-            return -1;
-        }
-        return list.get(list.getSize() - 1);
-    }
+    int  top()           { return l.getAt(l.size() - 1); }  // O(1)
 
     // Duyệt xuôi Stack: Từ Đỉnh (Top) xuống Đáy (Bottom)
     void travF() {
         cout << "Stack (Top -> Bottom): ";
-        list.travB(); // Đỉnh ở cuối mảng, nên duyệt xuôi Stack = duyệt ngược List
+        l.travB(); // Đỉnh nằm ở cuối mảng nên duyệt ngược List chính là từ Top -> Bottom
     }
 
     // Duyệt ngược Stack: Từ Đáy (Bottom) lên Đỉnh (Top)
     void travB() {
         cout << "Stack (Bottom -> Top): ";
-        list.travF(); // Đáy ở đầu mảng, nên duyệt ngược Stack = duyệt xuôi List
+        l.travF(); // Đáy nằm ở đầu mảng nên duyệt xuôi List chính là từ Bottom -> Top
     }
 };
 
 // ===================== CHƯƠNG TRÌNH MINH HỌA =====================
 int main() {
-    cout << "=== KIEM TRA STACK ===" << endl;
-    Stack st(5); // Khởi tạo Stack có dung lượng tối đa 5
+    Stack st;
+    st.init();
 
     st.push(10);
     st.push(20);
     st.push(30);
 
-    st.travF(); // In ra: 30 20 10 (30 ở đỉnh)
-    st.travB(); // In ra: 10 20 30 (10 ở đáy)
+    st.travF(); // In ra: Stack (Top -> Bottom): 30 20 10 
+    st.travB(); // In ra: Stack (Bottom -> Top): 10 20 30 
 
-    cout << "Phan tu o dinh Stack (Top): " << st.top() << endl; // Output: 30
+    cout << "Phan tu o dinh Stack (Top): " << st.top() << endl; // Out: 30
 
-    cout << "Thuc hien Pop: " << st.pop() << endl; // Output: 30
-
-    cout << "Sau khi Pop:" << endl;
-    st.travF(); // In ra: 20 10
+    cout << "Lay phan tu khoi Stack (Pop): " << st.pop() << endl; // Out: 30
+    st.travF(); // In ra: Stack (Top -> Bottom): 20 10 
 
     return 0;
 }
